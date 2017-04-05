@@ -1,4 +1,4 @@
-export type EventTodo = {
-  fait?: boolean,
-  texte?: string
-};
+export interface EventTodo {
+  fait?: boolean;
+  texte?: string;
+}
