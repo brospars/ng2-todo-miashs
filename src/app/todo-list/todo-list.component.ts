@@ -10,7 +10,7 @@ import { TodoFilter } from './../shared/todo-filter';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit {
-  @Input() titre: string;
+  @Input() title: string;
   @ViewChild('newTodo') newTodo: ElementRef;
   public nf: TodoList;
   private choses: Todo[];
