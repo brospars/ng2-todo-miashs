@@ -1,41 +1,23 @@
-import { Injectable } from '@angular/core';
-import { NF } from './nf';
-import { TodoList } from './todo-list';
-import { EventTodoList } from './event-todo-list';
-import { TodoSerialization } from './todo-serialization';
+import {Injectable} from '@angular/core';
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class TodoListService {
 
-  nf = new TodoList();
+  socket = new io('http://localhost:3000/');
 
   constructor() {
-    const cbSaveData = () => {
-    const serialization: TodoSerialization = [];
-    this.nf.choses.forEach( c => serialization.push({texte: c.texte, fait: c.fait, date: c.date.toString()}));
-      localStorage.setItem('todoListMiage', JSON.stringify(serialization));
-    };
-
-    this.nf.on('update', (nf: TodoList, eventName: string, eventValue: EventTodoList) => {
-      if (eventValue.append) {
-        const chose = eventValue.append;
-        chose.on('update', cbSaveData);
-      }
-      if (eventValue.remove) {
-        const chose = eventValue.remove;
-        chose.off('update', cbSaveData);
-      }
-      cbSaveData();
-    });
-
-    const choses: TodoSerialization = <TodoSerialization>JSON.parse(localStorage.getItem('todoListMiage') || '[]');
-    choses.forEach(c => {
-      this.nf.Ajouter(c.texte, c.fait, new Date(c.date));
-    });
   }
 
-  getData(): Promise<TodoList> {
-    return Promise.resolve(this.nf);
+  socketOn(eventName, callback){
+    this.socket.on(eventName,function(data){
+      console.log("on : "+eventName, data);
+      callback(data);
+    })
+  }
+
+  socketEmit(eventName, data){
+    this.socket.emit(eventName,data);
   }
 }
 

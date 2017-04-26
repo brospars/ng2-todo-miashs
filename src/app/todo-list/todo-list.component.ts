@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { TodoList } from './../shared/todo-list';
 import { TodoListService } from './../shared/todo-list.service';
-import { Todo } from './../shared/todo';
 import { TodoFilter } from './../shared/todo-filter';
 
 @Component({
@@ -12,8 +10,7 @@ import { TodoFilter } from './../shared/todo-filter';
 export class TodoListComponent implements OnInit {
   @Input() title: string;
   @ViewChild('newTodo') newTodo: ElementRef;
-  public nf: TodoList;
-  private choses: Todo[];
+  private choses;
   toggle: boolean;
   filterAll: TodoFilter;
   filterCompleted: TodoFilter;
@@ -30,13 +27,16 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.todoListService.getData().then((nf) => {
-      this.nf = nf;
-      this.choses = nf.choses;
+    let that = this;
+    this.todoListService.socketOn('init',function(data){
+      that.choses = data;
+    });
+    this.todoListService.socketOn('update',function(data){
+      that.choses = data;
     });
   }
 
-  getChoses(): Todo[] {
+  getChoses(){
     return this.choses.filter(this.currentFilter);
   }
 
@@ -57,7 +57,7 @@ export class TodoListComponent implements OnInit {
   }
 
   addTodo() {
-    this.nf.Ajouter(this.newTodo.nativeElement.value);
+    this.todoListService.socketEmit('add',{texte:this.newTodo.nativeElement.value, fait:false, date: new Date()});
   }
 
   toggleAllChange() {

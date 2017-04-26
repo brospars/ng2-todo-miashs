@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { Todo } from './../shared/todo';
+import { TodoListService } from './../shared/todo-list.service';
 
 @Component({
   selector: 'app-todo',
@@ -7,11 +7,11 @@ import { Todo } from './../shared/todo';
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent implements OnInit {
-  @Input ('nf') nf: Todo;
+  @Input ('nf') nf;
   @ViewChild('newText') newTextInput: ElementRef;
   editing: boolean;
 
-  constructor() {
+  constructor(private todoListService: TodoListService) {
     this.editing = false;
   }
 
@@ -19,11 +19,11 @@ export class TodoComponent implements OnInit {
   }
 
   dispose() {
-    this.nf.dispose();
+    this.todoListService.socketEmit('dispose',this.nf.id);
   }
 
   fait(fait: boolean) {
-    this.nf.Fait(fait);
+    this.todoListService.socketEmit('fait',this.nf.id);
   }
 
   edit() {
@@ -34,7 +34,7 @@ export class TodoComponent implements OnInit {
   }
 
   setText(value) {
-    this.nf.Texte(value);
+    this.todoListService.socketEmit('change',{texte:value, id : this.nf.id});
     this.editing = false;
   }
 }
