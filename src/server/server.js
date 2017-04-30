@@ -25,8 +25,13 @@ io.on('connection', function(socket){
     io.emit('update',todoList.choses);
   });
 
-  socket.on('fait', function(id){
-    todoList.Fait(id);
+  socket.on('fait', function(data){
+    todoList.Fait(data.id, data.toggleAll);
+    io.emit('update',todoList.choses);
+  });
+
+  socket.on('change', function(data){
+    todoList.Edit(data.id, data.texte);
     io.emit('update',todoList.choses);
   });
 });

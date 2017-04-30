@@ -19,11 +19,11 @@ export class TodoComponent implements OnInit {
   }
 
   dispose() {
-    this.todoListService.socketEmit('dispose',this.nf.id);
+    this.todoListService.socketEmit('dispose', this.nf.id);
   }
 
   fait(fait: boolean) {
-    this.todoListService.socketEmit('fait',this.nf.id);
+    this.todoListService.socketEmit('fait', {id: this.nf.id});
   }
 
   edit() {
@@ -34,7 +34,7 @@ export class TodoComponent implements OnInit {
   }
 
   setText(value) {
-    this.todoListService.socketEmit('change',{texte:value, id : this.nf.id});
+    this.todoListService.socketEmit('change', { texte: value, id : this.nf.id });
     this.editing = false;
   }
 }

@@ -9,15 +9,14 @@ export class TodoListService {
   constructor() {
   }
 
-  socketOn(eventName, callback){
-    this.socket.on(eventName,function(data){
-      console.log("on : "+eventName, data);
+  socketOn(eventName, callback) {
+    this.socket.on(eventName, function(data){
       callback(data);
-    })
+    });
   }
 
-  socketEmit(eventName, data){
-    this.socket.emit(eventName,data);
+  socketEmit(eventName, data) {
+    this.socket.emit(eventName, data);
   }
 }
 

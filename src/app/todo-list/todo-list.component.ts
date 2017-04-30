@@ -27,11 +27,11 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    let that = this;
-    this.todoListService.socketOn('init',function(data){
+    const that = this;
+    this.todoListService.socketOn('init', function(data){
       that.choses = data;
     });
-    this.todoListService.socketOn('update',function(data){
+    this.todoListService.socketOn('update', function(data){
       that.choses = data;
     });
   }
@@ -53,16 +53,21 @@ export class TodoListComponent implements OnInit {
   }
 
   disposeAll() {
-    return this.choses.filter(this.filterCompleted).forEach(c => c.dispose());
+    const that = this;
+    return this.choses.filter(this.filterCompleted).forEach(c => that.todoListService.socketEmit('dispose', c.id));
   }
 
   addTodo() {
-    this.todoListService.socketEmit('add',{texte:this.newTodo.nativeElement.value, fait:false, date: new Date()});
+    this.todoListService.socketEmit('add', { texte: this.newTodo.nativeElement.value, fait: false, date: new Date()});
+    this.newTodo.nativeElement.value = '';
   }
 
   toggleAllChange() {
+    const that = this;
     const check = !this.toggleAll();
-    this.choses.forEach((c) => c.Fait(check));
+    this.choses.forEach(function(c){
+      that.todoListService.socketEmit('fait', {id: c.id, toggleAll: check});
+    });
   }
 
   toggleAll(): boolean {
