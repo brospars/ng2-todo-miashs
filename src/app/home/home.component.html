@@ -1,10 +1,11 @@
+<h1>Mes Todo Lists</h1>
 <ul class="rooms-list">
-  <li>
+  <li class="new-list">
     <form (ngSubmit)="createTodo()">
-      <input placeholder="Nouvelle Liste" #newTodo autofocus>
+      <input maxlength="25" placeholder="+ Nouvelle Liste" #newTodo autofocus>
     </form>
   </li>
-  <li *ngFor="let room of getRooms()">
-    <a routerLink="/todo/{{room}}">{{room}}</a>
+  <li *ngFor="let room of getRooms()" class="list-item">
+    <a routerLink="/todo/{{room.name}}">{{room.name}} ({{room.count}})</a>
   </li>
 </ul>

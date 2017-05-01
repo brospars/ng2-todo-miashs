@@ -18,6 +18,8 @@ app.get('/getrooms', function(req, res){
 io.on('connection', function(socket){
   console.log('a user connected');
 
+  io.emit('rooms',getRoomList());
+
   socket.on('init', function(data){
     socket.join(data.room);
     socket.room = findOrAddRoom(data.room);
@@ -27,16 +29,19 @@ io.on('connection', function(socket){
   socket.on('add', function(data){
     socket.room.todoList.Ajouter(data.texte,data.fait,data.date);
     io.to(socket.room.name).emit('update',socket.room.todoList.choses);
+    io.emit('rooms',getRoomList());
   });
 
   socket.on('dispose', function(id){
     socket.room.todoList.Retirer(id);
     io.to(socket.room.name).emit('update',socket.room.todoList.choses);
+    io.emit('rooms',getRoomList());
   });
 
   socket.on('fait', function(data){
     socket.room.todoList.Fait(data.id, data.toggleAll);
     io.to(socket.room.name).emit('update',socket.room.todoList.choses);
+    io.emit('rooms',getRoomList());
   });
 
   socket.on('change', function(data){
@@ -95,7 +100,13 @@ function findOrAddRoom(roomName){
 function getRoomList(){
   var roomList = [];
   for(var i in rooms){
-    roomList.push(rooms[i].name);
+
+    roomList.push({
+      name: rooms[i].name,
+      count: rooms[i].todoList.choses.reduce(function(acc, chose) {
+        return acc + (chose.fait ? 0 : 1);
+      }, 0)
+    });
   }
   return roomList;
 }

@@ -1,4 +1,2 @@
-<ul>
-  <li><a routerLink="/">← Back to Home</a></li>
-</ul>
+<a routerLink="/" class="back-to-home" *ngIf="!hideBackLink">← Back to Home</a>
 <router-outlet></router-outlet>

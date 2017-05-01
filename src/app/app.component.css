@@ -1,0 +1,8 @@
+.back-to-home{
+  display: block;
+  margin: 20px 10px;
+  color:inherit;
+}
+.back-to-home:hover{
+  color:rgba(175, 47, 47, 1);
+}
