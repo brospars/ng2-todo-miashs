@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { TodoListService } from './../shared/todo-list.service';
 import { TodoFilter } from './../shared/todo-filter';
 
@@ -17,7 +18,7 @@ export class TodoListComponent implements OnInit {
   filterActives: TodoFilter;
   currentFilter: TodoFilter;
 
-  constructor (private todoListService: TodoListService) {
+  constructor (private todoListService: TodoListService, private route: ActivatedRoute) {
     this.choses = [];
     this.toggle = false;
     this.filterAll = () => true;
@@ -28,15 +29,20 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
-    this.todoListService.socketOn('init', function(data){
-      that.choses = data;
+
+    this.route.params.subscribe(params => {
+      if (params['roomName']) {
+        this.title = params['roomName'];
+        this.todoListService.socketEmit('init', {room: params['roomName']});
+      }
     });
+
     this.todoListService.socketOn('update', function(data){
       that.choses = data;
     });
   }
 
-  getChoses(){
+  getChoses() {
     return this.choses.filter(this.currentFilter);
   }
 

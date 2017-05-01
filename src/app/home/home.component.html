@@ -1,0 +1,10 @@
+<ul class="rooms-list">
+  <li>
+    <form (ngSubmit)="createTodo()">
+      <input placeholder="Nouvelle Liste" #newTodo autofocus>
+    </form>
+  </li>
+  <li *ngFor="let room of getRooms()">
+    <a routerLink="/todo/{{room}}">{{room}}</a>
+  </li>
+</ul>

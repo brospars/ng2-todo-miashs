@@ -3,8 +3,8 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class TodoListService {
-
-  socket = new io('http://localhost:3000/');
+  socketURL = 'http://localhost:3000/';
+  socket = new io(this.socketURL);
 
   constructor() {
   }
