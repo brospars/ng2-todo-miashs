@@ -1,6 +1,9 @@
 <section class="todoapp">
-  <header class="header">
+  <section class="title">
     <h1>{{title}}</h1>
+  </section>
+  <div class="shadowWrapper">
+  <header class="header">
     <form (ngSubmit)="addTodo()">
       <input class="new-todo" placeholder="Que faire?" #newTodo autofocus>
     </form>
@@ -29,4 +32,5 @@
     </ul>
     <button class="clear-completed" *ngIf="getCountCompleted() > 0" (click)="disposeAll()">Supprimer cochées</button>
   </footer>
+  </div>
 </section>
