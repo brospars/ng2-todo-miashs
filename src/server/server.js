@@ -47,6 +47,11 @@ io.on('connection', function(socket){
   socket.on('getRooms', function(data){
     io.emit('rooms',getRoomList());
   });
+
+  socket.on('leave', function(data){
+    if(socket.room)
+      socket.leave(socket.room.name);
+  });
 });
 
 http.listen(3000, function(){

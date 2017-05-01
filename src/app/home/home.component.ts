@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     const that = this;
     this.todoListService.socketEmit('getRooms', {});
+    this.todoListService.socketEmit('leave', {});
     this.todoListService.socketOn('rooms', function(data){
       that.rooms = data;
     });
@@ -28,8 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   createTodo() {
-    console.log(this.newTodo.nativeElement.value);
-    //this.router.navigateByUrl('/todo/' + this.newTodo.nativeElement.value);
+    this.router.navigateByUrl('/todo/' + this.newTodo.nativeElement.value);
   }
 
 }
