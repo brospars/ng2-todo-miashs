@@ -17,10 +17,10 @@ Pour lancer l'application il vous suffit de suivre le guide ci-dessous.
 
 
 ### Pour démarrer : 
-``` 
+```sh 
 git clone https://github.com/brospars/ng2-todo-miashs.git
 cd ng2-todo-miashs
-git checkout -b feat/your-feature
+npm install -g @angular/cli #si pas déjà installé
 npm install
 node src/server/server.js
 ng serve
