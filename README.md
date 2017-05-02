@@ -23,7 +23,10 @@ cd ng2-todo-miashs
 npm install -g @angular/cli #si pas déjà installé
 npm install
 node src/server/server.js
+# Dans une autre console
 ng serve
 ```
+
+L'application est accessible sur : http://localhost:4200/
 
 
